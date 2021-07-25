@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,8 +52,10 @@ public class AdminBookController {
 		try {
 			book = bookService.addBook(book);
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (IllegalArgumentException e) {
+			System.out.println("IllegalArgumentException Exception occurred in addBook of Admin Book Controller");
+			System.out.println("Book Passed is either null");
+			System.out.println("Actual message = " + e.getMessage());
 		}
 		return "admin/dashboard";
 	}
@@ -61,7 +64,16 @@ public class AdminBookController {
 	public String search(@RequestParam("keyword") String keyword, Model model) {
 
 		List<Book> books = new ArrayList<Book>();
-		books = this.bookService.listByKeyword(keyword);
+		try {
+			books = this.bookService.listByKeyword(keyword);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Exception occurred in search of Admin Book Controller");
+			System.out.println("Book Passed is either null");
+			System.out.println("Actual message = " + e.getMessage());
+		}
+
 		model.addAttribute("books", books);
 		return "admin/allBooks";
 	}
@@ -71,8 +83,10 @@ public class AdminBookController {
 		try {
 
 			this.bookService.deleteBookById(id);
-		} catch (Exception e) {
-			System.out.println("in delete request = " + e.getMessage());
+		} catch (IllegalArgumentException e) {
+			System.out.println(" IllegalArgumentException Exception occurred in delete Book of Admin Book Controller");
+			System.out.println("Book Passed is either null");
+			System.out.println("Actual message = " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).build();
@@ -84,7 +98,17 @@ public class AdminBookController {
 
 		try {
 			this.bookService.updateBookById(book, id);
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
+			System.out.println(" NullPointer Exception occurred in update Book of Admin Book Controller");
+			System.out.println("Book object has null value");
+			System.out.println("Actual message = " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println(" Illegal Exception occurred in update Book of Admin Book Controller");
+			System.out.println("id passed to the object is null");
+			System.out.println("Actual message = " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 
@@ -94,16 +118,23 @@ public class AdminBookController {
 //  Approving the request related to the book.
 	@GetMapping(value = "/getAllRecords")
 	public String getAllRecords(Model model) {
-		List<BookRecord> records = this.bookRecordService.getAllBookRecord();
-		List<String> columnName = new ArrayList<String>();
-		Field[] fields = BookRecord.class.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++)
-			columnName.add(fields[i].getName());
-		records.forEach(e -> {
-			System.out.println(e.toString());
-		});
-		model.addAttribute("columnName", columnName);
-		model.addAttribute("records", records);
+
+
+		try{
+			List<BookRecord> records = this.bookRecordService.getAllBookRecord();
+			List<String> columnName = new ArrayList<String>();
+			Field[] fields = BookRecord.class.getDeclaredFields();
+			for (int i = 0; i < fields.length; i++)
+				columnName.add(fields[i].getName());
+			model.addAttribute("columnName", columnName);
+			model.addAttribute("records", records);
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("IllegalArgumentException Exception occurred in getAllRecords of Admin Book Controller");
+			System.out.println("Actual message = " + e.getMessage());
+		}
+
 		return "admin/getAllRecords";
 	}
 

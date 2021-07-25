@@ -23,10 +23,12 @@ public class BookRecordServiceImpl implements BookRecordService {
 	}
 
 	@Override
-	public BookRecord createBookRecord(BookRecord bookRecord) {
+	public BookRecord createBookRecord(BookRecord bookRecord, String userUsername,int bookId) {
 		bookRecord.setStatus("REQUESTED");
-		this.bookRecordRepository.save(bookRecord);
-		return bookRecord;
+		bookRecord.setBookId(bookId);
+		bookRecord.setUserUsername(userUsername);
+		return this.bookRecordRepository.save(bookRecord);
+
 	}
 
 	@Override
