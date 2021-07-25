@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="base" 
+           template="/WEB-INF/views/jsp/base.jsp">  
+        <put-attribute name="nav" 
+           value="" />
+           <put-attribute name="body" value=""/>
+           <put-attribute name="js" value=""/>
+    </definition>  
+	<definition name="login" extends="base">
+		<put-attribute name="nav" 
+           value="/WEB-INF/views/jsp/utility/nav.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/jsp/login.jsp"/>
+	</definition>
+	
+	<definition name="register" extends="base">
+		<put-attribute name="nav" 
+           value="/WEB-INF/views/jsp/utility/nav.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/jsp/register.jsp"/>
+	</definition>
+	
+	<definition name="welcome" extends="base">
+		<put-attribute name="nav" 
+           value="/WEB-INF/views/jsp/utility/nav.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/jsp/welcome.jsp"/>
+	</definition>
+	
+	<definition name="successRegistration" extends="base">
+		<put-attribute name="nav" 
+           value="/WEB-INF/views/jsp/utility/nav.jsp" />
+           <put-attribute name="body" value="/WEB-INF/views/jsp/successRegistration.jsp"/>
+	</definition>
+	
+</tiles-definitions>
