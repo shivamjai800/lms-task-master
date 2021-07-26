@@ -70,6 +70,12 @@ public class UserServiceImplementation implements UserService {
 	public boolean passwordMatch(String password, String hash) {
 		return this.passwordEncoder.matches(password, hash);
 	}
+
+	@Override
+	public void removeBookRecordRequest(String username, int bookId) {
+		User u = this.userRepository.findByUsername(username);
+		u.getRequest().removeIf(e-> e.getBookId()==bookId && e.getStatus().equals("REQUESTED"));
+	}
 //	Book requests method.
 
 

@@ -56,7 +56,6 @@ public class UserController {
 			model.addAttribute("user", user);
 			return "register";
 		}
-
 		try {
 			
 			User user1 = userService.addUser(user);

@@ -108,4 +108,19 @@ public class BookServiceImplTest{
         Mockito.when(bookRepository.findAll()).thenReturn(list);
         assertThat(bookService.listByKeyword(null)).isEqualTo(list);
     }
+
+    @Test
+    public void removeBookRecordRequest()
+    {
+        BookRecord bookRecord = new BookRecord(); bookRecord.setBookId(1); bookRecord.setStatus("REQUESTED");
+        List<BookRecord> list = new ArrayList<BookRecord>(); list.add(bookRecord);
+        book.setRequest(list);
+
+        Mockito.when(this.bookRepository.findById(1)).thenReturn(book);
+
+        this.bookService.removeBookRecordRequest(1);
+        assertTrue(book.getRequest().isEmpty());
+    }
+
+
 }

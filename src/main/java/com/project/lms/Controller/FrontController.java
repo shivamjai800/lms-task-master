@@ -1,16 +1,21 @@
 package com.project.lms.Controller;
 
+import com.project.lms.Details.CustomUserDetails;
+import com.project.lms.Entities.Book;
+import com.project.lms.Entities.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.lms.Entities.User;
+
+import java.security.Principal;
 
 @Controller
 public class FrontController {
@@ -41,7 +46,22 @@ public class FrontController {
     public String login()
     {
 //		System.out.println("This function is login in the Front Controller is called");
-        return "login";
+        String redirectURL;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            redirectURL = "login";
+        }
+        else
+        {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            if(userDetails.getRoles().equals("ROLE_ADMIN"))
+            {
+                redirectURL = "redirect:/admin/dashboard";
+            }
+            else
+                redirectURL = "redirect:/user/dashboard";
+        }
+        return redirectURL;
     }
     
     @GetMapping("/logout")
@@ -74,14 +94,13 @@ public class FrontController {
 //		System.out.println("This function is exceptionHandler in the Front Controller is called");
     	return "error";
     }
-    
-    
-    @GetMapping("/test")
-    public String test(Model model)
-    {
-//		System.out.println("This function is test in the Front Controller is called");
-    	model.addAttribute("user",new User());
-        return "base";
+
+
+    @PostMapping(value = "/test", consumes = {"application/json"})
+    public ResponseEntity<Void> request1(@RequestBody Test test){
+        System.out.println("Inside th test controller"+test.getName()+" "+test.getId());
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
     
 

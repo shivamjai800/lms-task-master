@@ -22,7 +22,9 @@ public interface UserService{
 	public List<User> listByKeyword(String keyword);
 	public void updateUserPassword(User user);
 	public boolean passwordMatch(String password, String hash);
+
+
 	/* Book Request */
-	
+	public void removeBookRecordRequest(String username, int bookId);
 }
 

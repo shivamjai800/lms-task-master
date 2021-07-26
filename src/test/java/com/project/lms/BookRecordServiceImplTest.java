@@ -1,10 +1,12 @@
 package com.project.lms;
 
 
+import com.project.lms.Service.Implementation.BookServiceImplementation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,9 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 import com.project.lms.Entities.*;
 import com.project.lms.Repository.*;
 import com.project.lms.Service.Implementation.BookRecordServiceImpl;
@@ -28,8 +29,13 @@ public class BookRecordServiceImplTest {
     @MockBean
     BookRecordRepository bookRecordRepository;
 
+    @MockBean
+    BookServiceImplementation bookServiceImplementation;
+
+
     @Autowired
     BookRecordServiceImpl bookRecordService;
+
 
     BookRecord bookRecord = new BookRecord();
 
@@ -80,14 +86,30 @@ public class BookRecordServiceImplTest {
     @Test
     public void updateBookRecordById(){
 
-        BookRecord bookRecord1 = new BookRecord();
+        BookRecord bookRecord1 = new BookRecord(); bookRecord1.setBookId(1);
+        Book book = new Book(); book.setId(1);
+        UnitBook unitBook = new UnitBook();unitBook.setId("test unit Book"); unitBook.setAssigned(false);
+        Set<UnitBook> s = new HashSet<UnitBook>(); s.add(unitBook);
+        book.setUnitBooks(s);
         Mockito.when(this.bookRecordRepository.findBookRecordById(1)).thenReturn(bookRecord1);
         Mockito.when(this.bookRecordRepository.save(bookRecord1)).thenReturn(bookRecord1);
+        Mockito.when(this.bookServiceImplementation.getBookById(1)).thenReturn(book);
+
+        bookRecord.setStatus("APPROVED");
         this.bookRecordService.updateBookRecordById(bookRecord,1);
-//        assertTrue(bookRecord1.getStatus().equals(bookRecord.getStatus()));
-        assertTrue(bookRecord1.getAdminId().equals(bookRecord.getAdminId()));
+//        assertTrue(bookRecord1.getAdminId().equals(bookRecord.getAdminId()));
+    }
 
+    @Test
+    public void removeBookRecordByUsernameAndBookId()
+    {
+        List<BookRecord> list = new ArrayList<BookRecord>();
+        bookRecord.setStatus("REQUESTED");
+        list.add(bookRecord);
 
+        Mockito.when(this.bookRecordRepository.findAll()).thenReturn(list);
+        this.bookRecordService.removeBookRecordByUsernameAndBookId("shivamuser",1);
+        assertTrue(list.isEmpty());
 
     }
 }

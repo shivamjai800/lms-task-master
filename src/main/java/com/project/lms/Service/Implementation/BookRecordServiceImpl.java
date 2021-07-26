@@ -1,9 +1,11 @@
 package com.project.lms.Service.Implementation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.project.lms.Entities.UnitBook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class BookRecordServiceImpl implements BookRecordService {
 
 	@Autowired
 	BookRecordRepository bookRecordRepository;
+
+	@Autowired
+	private BookServiceImplementation bookService;
 
 	@Transactional
 	public void deleteBookRecordById(int requestId) {
@@ -45,12 +50,24 @@ public class BookRecordServiceImpl implements BookRecordService {
 	public void updateBookRecordById(BookRecord bNew, int requestId) {
 		BookRecord bOld = this.bookRecordRepository.findBookRecordById(requestId);
 		bOld.setStatus(bNew.getStatus());
+		if(bNew.getStatus().equals("APPROVED")) {
+			UnitBook unitBook = this.bookService.getBookById(bOld.getBookId()).getUnitBooks()
+					.parallelStream().filter(e -> !e.isAssigned()).findFirst().get();
+			bOld.setUnitBookReceived(unitBook.getId());
+		}
 		bOld.setAdminId(bNew.getAdminId());
-		bOld.setUnitBookReceived(bNew.getUnitBookReceived());
 		bOld.setRemarks(bNew.getRemarks());
-		bOld.setReturnDateTime(bNew.getReturnDateTime());
+		bOld.setReturnDateTime(LocalDateTime.now().plusDays(7));
 		
 		this.bookRecordRepository.save(bOld);
 		
 	}
+
+	@Override
+	public void removeBookRecordByUsernameAndBookId(String userUsername, int bookId) {
+		List<BookRecord> bookRecords = this.bookRecordRepository.findAll();
+		bookRecords.removeIf(e->e.getUserUsername().equals(userUsername) && e.getBookId()==bookId && e.getStatus().equals("REQUESTED"));
+		return;
+	}
+
 }

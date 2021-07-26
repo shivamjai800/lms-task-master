@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Null;
 
+import com.project.lms.Entities.BookRecord;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -132,6 +134,18 @@ public class UserServiceImplTest {
 //		assertThat(userService.listByKeyword("shivam")).isEqualTo(user);
 
 
+	}
+
+	@Test
+	public void removeBookRecordRequest()
+	{
+		Mockito.when(this.userRepository.findByUsername("shivamuser")).thenReturn(user);
+		BookRecord bookRecord = new BookRecord(); bookRecord.setBookId(1); bookRecord.setStatus("REQUESTED");
+		List<BookRecord> list = new ArrayList<BookRecord>(); list.add(bookRecord);
+		user.setRequest(list);
+
+		this.userService.removeBookRecordRequest("shivamuser",1);
+		assertTrue(user.getRequest().isEmpty());
 	}
 
 }

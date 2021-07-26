@@ -8,8 +8,10 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,8 +72,8 @@ public class UserBookController {
 	}
 
 //	<----- BookRecordRequest  ------>
-
-	@RequestMapping(value = "/request/{bookId}", method = RequestMethod.POST, consumes = "*/*")
+	@RequestMapping(value = "/request/{bookId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
 	public ResponseEntity<String> request(@org.springframework.web.bind.annotation.PathVariable("bookId") int bookId,
 			@RequestBody BookRecord bookRecord, Model model, Principal principal) {
 
@@ -103,12 +105,9 @@ public class UserBookController {
 			Principal principal) {
 
 		try {
-			User u = this.userService.getTheUser(principal.getName());
-			Book b = this.bookService.getBookById(bookId);
-			BookRecord bR = b.getRequest().stream().filter(e -> e.getBookId() == bookId).findFirst().get();
-			u.getRequest().remove(bR);
-			b.getRequest().removeIf(e -> e.getBookId() == bookId);
-			this.bookRecordService.deleteBookRecordById(bR.getId());
+			this.userService.removeBookRecordRequest(principal.getName(), bookId);
+			this.bookService.removeBookRecordRequest(bookId);
+			this.bookRecordService.removeBookRecordByUsernameAndBookId(principal.getName(),bookId);
 		} catch (NullPointerException e) {
 			System.out.println("Null Pointer Exception occurred in delete bookrecord of User Book Controller");
 			System.out.println("either user is null or book is null");
@@ -147,4 +146,7 @@ public class UserBookController {
 
 		return "user/getAllRecords";
 	}
+
+
+
 }

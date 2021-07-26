@@ -12,4 +12,7 @@ public interface BookRecordService {
 	public List<BookRecord> getAllBookRecord();
 	
 	public void updateBookRecordById(BookRecord bNew, int requestId);
+
+	public void removeBookRecordByUsernameAndBookId(String userUsername,int bookId);
+
 }

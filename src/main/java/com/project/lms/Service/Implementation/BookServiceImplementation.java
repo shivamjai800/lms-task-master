@@ -86,6 +86,13 @@ public class BookServiceImplementation implements BookService {
 	}
 
 	@Override
+	public void removeBookRecordRequest(int bookId) {
+		Book b = this.bookRepository.findById(bookId);
+		b.getRequest().removeIf(e -> e.getBookId()==bookId && e.getStatus().equals("REQUESTED"));
+		return;
+	}
+
+	@Override
 	public int getAvailability(int id) {
 		
 		return 0;

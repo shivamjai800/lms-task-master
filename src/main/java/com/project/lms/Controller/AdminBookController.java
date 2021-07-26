@@ -144,16 +144,7 @@ public class AdminBookController {
 
 		try {
 			bookRecord.setAdminId(principal == null ? "shivamadmin" : principal.getName());
-
-			if (bookRecord.getStatus().equals("APPROVED")) {
-				BookRecord oldBookRecord = this.bookRecordService.findBookRecordById(requestId);
-				UnitBook unitBook = this.bookService.getBookById(oldBookRecord.getBookId()).getUnitBooks()
-						.parallelStream().filter(e -> !e.isAssigned()).findFirst().get();
-				
-				bookRecord.setReturnDateTime(LocalDateTime.now().plusDays(7));
-				bookRecord.setUnitBookReceived(unitBook.getId());
-			}
-			
+			BookRecord oldBookRecord = this.bookRecordService.findBookRecordById(requestId);
 			this.bookRecordService.updateBookRecordById(bookRecord, requestId);
 		} catch (Exception e) {
 			System.out.println("in update Book Record status  = " + e.getMessage());
