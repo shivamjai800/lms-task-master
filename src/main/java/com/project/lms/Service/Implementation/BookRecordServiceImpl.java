@@ -32,8 +32,8 @@ public class BookRecordServiceImpl implements BookRecordService {
 		bookRecord.setStatus("REQUESTED");
 		bookRecord.setBookId(bookId);
 		bookRecord.setUserUsername(userUsername);
+		bookRecord.setStartDateTime(LocalDateTime.now());
 		return this.bookRecordRepository.save(bookRecord);
-
 	}
 
 	@Override
@@ -66,7 +66,8 @@ public class BookRecordServiceImpl implements BookRecordService {
 	@Override
 	public void removeBookRecordByUsernameAndBookId(String userUsername, int bookId) {
 		List<BookRecord> bookRecords = this.bookRecordRepository.findAll();
-		bookRecords.removeIf(e->e.getUserUsername().equals(userUsername) && e.getBookId()==bookId && e.getStatus().equals("REQUESTED"));
+		BookRecord br = bookRecords.stream().filter(e->e.getUserUsername().equals(userUsername) && e.getBookId()==bookId && e.getStatus().equals("REQUESTED")).findAny().get();
+		this.bookRecordRepository.deleteBookRecordById(br.getId());
 		return;
 	}
 

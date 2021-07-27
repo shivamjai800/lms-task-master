@@ -89,6 +89,7 @@ public class BookServiceImplementation implements BookService {
 	public void removeBookRecordRequest(int bookId) {
 		Book b = this.bookRepository.findById(bookId);
 		b.getRequest().removeIf(e -> e.getBookId()==bookId && e.getStatus().equals("REQUESTED"));
+		this.bookRepository.save(b);
 		return;
 	}
 

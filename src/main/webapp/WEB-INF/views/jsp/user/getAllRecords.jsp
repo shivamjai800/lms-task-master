@@ -48,24 +48,24 @@
 					<tr th:id="'row' + ${iStat.count}"
 						th:each="record , iStat: ${records}">
 						<td th:text="${iStat.count}" />
-						<td th:id="'recordId' + ${iStat.count}" th:text="${record.id}" />
-						<td th:id="'bookId' + ${iStat.count}" th:text="${record.bookId}" />
+						<td th:id="'recordId' + ${iStat.count}" th:text="${record.id} != null ? ${record.id} : '' " />
+						<td th:id="'bookId' + ${iStat.count}" th:text="${record.bookId} != null ? ${record.bookId} : '' " />
 						<td th:id="'requestDate' + ${iStat.count}"
-							th:text="${record.startDateTime.toLocalDate()}" />
+							th:text="${record.startDateTime} != null ? ${record.startDateTime.toLocalDate()} : '' " />
 						<td th:id="'requestTime' + ${iStat.count}"
-							th:text="${record.startDateTime.toLocalTime()}" />
-						<td th:id="'status' + ${iStat.count}" th:text="${record.status}" />
+							th:text="${record.startDateTime} != null ? ${record.startDateTime.toLocalTime()} : '' " />
+						<td th:id="'status' + ${iStat.count}" th:text="${record.status} != null ? ${record.status} : '' " />
 						<td th:id="'unitBook' + ${iStat.count}"
-							th:text="${record.unitBookReceived}" />
+							th:text="${record.unitBookReceived} != null ? ${record.unitBookReceived} : '' " />
 						<td th:id="'username' + ${iStat.count}"
-							th:text="${record.userUsername}" />
-						<td th:id="'adminId' + ${iStat.count}" th:text="${record.adminId}" />
+							th:text="${record.userUsername} != null ? ${record.userUsername} : '' " />
+						<td th:id="'adminId' + ${iStat.count}" th:text="${record.adminId} != null ? ${record.adminId} : '' " />
 						
 						<td th:id="'endDate' + ${iStat.count}"
 							th:text="${record.returnDateTime} != null ? ${record.returnDateTime.toLocalDate()}: ''" />
 						<td th:id="'endTime' + ${iStat.count}"
 							th:text="${record.returnDateTime} != null ? ${record.returnDateTime.toLocalTime()} : '' " />
-						<td th:id="'remarks' + ${iStat.count}" th:text="${record.remarks}" />
+						<td th:id="'remarks' + ${iStat.count}" th:text="${record.remarks} != null ? ${record.remarks} : '' " />
 					</tr>
 				</tbody>
 			</table>

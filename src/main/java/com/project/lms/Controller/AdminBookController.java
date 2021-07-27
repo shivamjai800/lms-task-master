@@ -122,17 +122,17 @@ public class AdminBookController {
 
 		try{
 			List<BookRecord> records = this.bookRecordService.getAllBookRecord();
-			List<String> columnName = new ArrayList<String>();
-			Field[] fields = BookRecord.class.getDeclaredFields();
-			for (int i = 0; i < fields.length; i++)
-				columnName.add(fields[i].getName());
-			model.addAttribute("columnName", columnName);
+			records.forEach(e-> System.out.println(e.toString()));
 			model.addAttribute("records", records);
 		}
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("IllegalArgumentException Exception occurred in getAllRecords of Admin Book Controller");
 			System.out.println("Actual message = " + e.getMessage());
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("SOme of the argument might be wrong ");
 		}
 
 		return "admin/getAllRecords";

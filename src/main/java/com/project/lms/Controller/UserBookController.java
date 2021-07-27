@@ -72,8 +72,7 @@ public class UserBookController {
 	}
 
 //	<----- BookRecordRequest  ------>
-	@RequestMapping(value = "/request/{bookId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
+	@RequestMapping(value = "/request/{bookId}", method = RequestMethod.POST, consumes = {"application/json"})
 	public ResponseEntity<String> request(@org.springframework.web.bind.annotation.PathVariable("bookId") int bookId,
 			@RequestBody BookRecord bookRecord, Model model, Principal principal) {
 

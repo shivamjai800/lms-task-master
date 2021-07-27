@@ -78,22 +78,16 @@ public class FrontController {
     	model.addAttribute("user",new User());
         return "register";
     }
-    
-    @GetMapping("/error")
-    public String error()
-    {
-//		System.out.println("This function is error in the Front Controller is called");
-    	return "error";
-    }
+
     
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = Exception.class)
-    public String exceptionHandler()
-    {
-//		System.out.println("This function is exceptionHandler in the Front Controller is called");
-    	return "error";
-    }
+//    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+//    @ExceptionHandler(value = Exception.class)
+//    public String exceptionHandler()
+//    {
+////		System.out.println("This function is exceptionHandler in the Front Controller is called");
+//    	return "error";
+//    }
 
 
     @PostMapping(value = "/test", consumes = {"application/json"})

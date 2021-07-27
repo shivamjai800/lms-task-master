@@ -108,8 +108,12 @@ public class BookRecordServiceImplTest {
         list.add(bookRecord);
 
         Mockito.when(this.bookRecordRepository.findAll()).thenReturn(list);
+        Mockito.doNothing().when(this.bookRecordRepository).deleteBookRecordById(1);
+
         this.bookRecordService.removeBookRecordByUsernameAndBookId("shivamuser",1);
-        assertTrue(list.isEmpty());
+        Mockito.verify(this.bookRecordRepository,Mockito.times(1)).deleteBookRecordById(1);
+
+
 
     }
 }
