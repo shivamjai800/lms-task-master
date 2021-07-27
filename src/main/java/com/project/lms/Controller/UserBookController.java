@@ -29,7 +29,7 @@ import com.project.lms.Service.Implementation.UserServiceImplementation;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/user/book")
+@RequestMapping("/user")
 public class UserBookController {
 
 	@Autowired
@@ -41,13 +41,14 @@ public class UserBookController {
 	@Autowired
 	BookRecordServiceImpl bookRecordService;
 
-	@PostMapping("/search")
+	@PostMapping("/books/search")
 	public String search(@RequestParam("keyword") String keyword, Model model, Principal principal) {
 		List<Book> books = new ArrayList<Book>();
 		List<Integer> requestBookIds = new ArrayList<Integer>();
 		List<Integer> approveBookIds = new ArrayList<Integer>();
 		try {
 			books = this.bookService.listByKeyword(keyword);
+			books.forEach(e-> System.out.println(e));
 			User u = this.userService.getTheUser(principal.getName());
 
 			u.getRequest().stream().filter(e-> e.getStatus().equals("REQUESTED")).forEach(e-> requestBookIds.add(e.getBookId()));
@@ -72,7 +73,7 @@ public class UserBookController {
 	}
 
 //	<----- BookRecordRequest  ------>
-	@RequestMapping(value = "/request/{bookId}", method = RequestMethod.POST, consumes = {"application/json"})
+	@RequestMapping(value = "/books/records/{bookId}", method = RequestMethod.POST, consumes = {"application/json"})
 	public ResponseEntity<String> request(@org.springframework.web.bind.annotation.PathVariable("bookId") int bookId,
 			@RequestBody BookRecord bookRecord, Model model, Principal principal) {
 
@@ -99,7 +100,7 @@ public class UserBookController {
 		return new ResponseEntity<>("Requested is created for the user", HttpStatus.OK);
 	}
 
-	@DeleteMapping("/request/{bookId}")
+	@DeleteMapping("/books/records/{bookId}")
 	public ResponseEntity<String> delete(@org.springframework.web.bind.annotation.PathVariable("bookId") int bookId,
 			Principal principal) {
 
@@ -122,7 +123,7 @@ public class UserBookController {
 		return new ResponseEntity<>("Book with Book Id = " + bookId + "  is deleted ", HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping(value="/getAllRecords")
+	@GetMapping(value="/records")
 	public String getAllRecords(Model model, Principal principal)
 	{
 		try
@@ -145,7 +146,23 @@ public class UserBookController {
 
 		return "user/getAllRecords";
 	}
+	@PutMapping(value = "/records/{recordId}",consumes = {"application/json"})
+	public ResponseEntity<String> returnBook(@PathVariable("recordId") int recordId)
+	{
+		try
+		{
+			this.bookRecordService.approveBookRecordById(recordId);
+		}
+		catch (NullPointerException | IllegalArgumentException e)
+		{
+			System.out.println("NullPointerException or IllegalException occurred in getAllRecord of User Book Controller");
+			System.out.println("May be username is null");
+			System.out.println("Actual message = " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+		}
+		return new ResponseEntity<>("SuccessFully Returned the book", HttpStatus.ACCEPTED);
 
+	}
 
 
 }

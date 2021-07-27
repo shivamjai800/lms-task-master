@@ -38,6 +38,7 @@ public class UserServiceImplementation implements UserService {
 	}
 
 	public User addUser(User user) {
+		user.setRoles("ROLE_USER");
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setActive(true);
 		return this.userRepository.save(user);

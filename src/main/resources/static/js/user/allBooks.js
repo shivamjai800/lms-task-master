@@ -1,5 +1,5 @@
 function requestBook(bookId) {
-	let url = "/user/book/request/" + bookId;
+	let url = "/user/books/records/" + bookId;
 	$.ajax({
 		type: "POST",
 		url: url,
@@ -17,7 +17,7 @@ function requestBook(bookId) {
 
 };
 function cancelBook(bookId) {
-	let url = "/user/book/request/" + bookId;
+	let url = "/user/books/records/" + bookId;
 	$.ajax({
 		type: "Delete",
 		url: url,

@@ -68,13 +68,7 @@
 				<div novalidate th:each="e : ${#fields.errors('password')}"
 					th:text="${e}" class="invalid-feedback"></div>
 			</div>
-			<div class="form-group">
-				<label for="roles">select Role</label> <select ${user.roles}
-					name="roles" class="form-control" id="roles">
-					<option value="ROLE_ADMIN">Role_ADMIN</option>
-					<option value="ROLE_USER">Role_USER</option>
-				</select>
-			</div>
+
 			<div class="container text-center">
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>

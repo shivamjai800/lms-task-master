@@ -14,15 +14,15 @@
 			</a></li>
 
 			<li class="nav-item"><a class="nav-link"
-				href="/user/editing">Edit </a></li>
-			<li><a class="nav-link" href="/user/book/getAllRecords"><button
+				href="/user/edit">Edit </a></li>
+			<li><a class="nav-link" href="/user/records"><button
 						class="btn btn-outline-success my-2 my-sm-0">All Records</button></a></li>
 			<li><a class="nav-link" href="/logout"><button
 						class="btn btn-outline-success my-2 my-sm-0">Logout</button></a></li>
 		</ul>
 		<ul class="navbar-nav">
 		
-			<form th:action="@{/user/book/search}" method="post"
+			<form th:action="@{/user/books/search}" method="post"
 				class="form-inline my-2 my-lg-0">
 				<input id="keyword" name="keyword" class="form-control mr-sm-2"
 					type="search" placeholder="Book Search" aria-label="Search">

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,10 +57,10 @@ public class FrontController {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             if(userDetails.getRoles().equals("ROLE_ADMIN"))
             {
-                redirectURL = "redirect:/admin/dashboard";
+                redirectURL = "redirect:/admin";
             }
             else
-                redirectURL = "redirect:/user/dashboard";
+                redirectURL = "redirect:/user";
         }
         return redirectURL;
     }
@@ -90,11 +91,12 @@ public class FrontController {
 //    }
 
 
-    @PostMapping(value = "/test", consumes = {"application/json"})
-    public ResponseEntity<Void> request1(@RequestBody Test test){
-        System.out.println("Inside th test controller"+test.getName()+" "+test.getId());
-
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @GetMapping("/test")
+    public String test()
+    {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        System.out.println(bCryptPasswordEncoder.encode("123456"));
+        return "/welcome";
     }
     
 

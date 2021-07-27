@@ -29,7 +29,7 @@ public class User {
     @NotBlank(message = "it should not be blank ")
     String password;
     
-    @NotBlank(message = "Please Choose the role")
+
     String roles;
     
     boolean active;

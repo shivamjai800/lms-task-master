@@ -15,4 +15,5 @@ public interface BookRecordService {
 
 	public void removeBookRecordByUsernameAndBookId(String userUsername,int bookId);
 
+    public void approveBookRecordById(int recordId);
 }

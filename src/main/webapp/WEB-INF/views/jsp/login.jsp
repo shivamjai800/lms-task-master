@@ -39,8 +39,7 @@
 <body>
 	<nav th:replace="nav :: nav"></nav>
 	<div class="content-section new">
-		<form th:action="@{/login
-		}" action="#" method="post">
+		<form th:action="@{/login}" action="#" method="post">
 			<div th:if="${param.error}" class="alert alert-danger">
 				Invalid Credential
 			</div>

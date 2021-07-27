@@ -27,7 +27,7 @@ import com.project.lms.Service.Implementation.UserServiceImplementation;
 import java.lang.reflect.Field;
 
 @Controller
-@RequestMapping("/admin/book")
+@RequestMapping("/admin")
 public class AdminBookController {
 
 	@Autowired
@@ -36,13 +36,13 @@ public class AdminBookController {
 	@Autowired
 	BookRecordServiceImpl bookRecordService;
 
-	@GetMapping("/addBook")
+	@GetMapping("/books/addBook")
 	public String addBookView(Model model) {
 		model.addAttribute("book", new Book());
 		return "admin/addBookView";
 	}
 
-	@PostMapping("")
+	@PostMapping("/book")
 	public String addBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
 		System.out.println(book);
 		if (result.hasErrors()) {
@@ -60,7 +60,7 @@ public class AdminBookController {
 		return "admin/dashboard";
 	}
 
-	@PostMapping("/search")
+	@PostMapping("/books/search")
 	public String search(@RequestParam("keyword") String keyword, Model model) {
 
 		List<Book> books = new ArrayList<Book>();
@@ -78,7 +78,7 @@ public class AdminBookController {
 		return "admin/allBooks";
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/books/{id}")
 	public ResponseEntity<Void> deleteBook(@org.springframework.web.bind.annotation.PathVariable("id") int id) {
 		try {
 
@@ -92,7 +92,7 @@ public class AdminBookController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "*/*")
+	@RequestMapping(value = "/books/{id}", method = RequestMethod.PUT, consumes = "*/*")
 	public ResponseEntity<Void> updateUser(@RequestBody Book book,
 			@org.springframework.web.bind.annotation.PathVariable("id") int id) {
 
@@ -116,7 +116,7 @@ public class AdminBookController {
 	}
 
 //  Approving the request related to the book.
-	@GetMapping(value = "/getAllRecords")
+	@GetMapping(value = "/records")
 	public String getAllRecords(Model model) {
 
 
@@ -138,7 +138,7 @@ public class AdminBookController {
 		return "admin/getAllRecords";
 	}
 
-	@RequestMapping(value = "/changeBookStatus/{requestId}", method = RequestMethod.PUT, consumes = "*/*")
+	@RequestMapping(value = "/records/{requestId}", method = RequestMethod.PUT, consumes = "*/*")
 	public ResponseEntity<String> changeBookStatus(@RequestBody BookRecord bookRecord,
 			@org.springframework.web.bind.annotation.PathVariable("requestId") int requestId, Principal principal) {
 

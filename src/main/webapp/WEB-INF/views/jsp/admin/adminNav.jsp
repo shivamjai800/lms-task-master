@@ -16,9 +16,9 @@
 			<li><a class="nav-link" href="/logout"><button
 						class="btn btn-outline-success my-2 my-sm-0">Logout</button></a></li>
 
-			<li><a class="nav-link" href="/admin/book/addBook"><button
+			<li><a class="nav-link" href="/admin/books/addBook"><button
 						class="btn btn-outline-success my-2 my-sm-0">AddBook</button></a></li>
-			<li><a class="nav-link" href="/admin/book/getAllRecords"><button
+			<li><a class="nav-link" href="/admin/records"><button
 						class="btn btn-outline-success my-2 my-sm-0">All Records</button></a></li>
 		</ul>
 
@@ -35,7 +35,7 @@
 			</form>
 			
 			
-			<form th:action="@{/admin/book/search}" method="post"
+			<form th:action="@{/admin/books/search}" method="post"
 				class="form-inline my-2 my-lg-0">
 				<input id="keyword" name="keyword" class="form-control mr-sm-2"
 					type="search" placeholder="Book Search" aria-label="Search">

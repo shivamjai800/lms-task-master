@@ -31,7 +31,7 @@ public class UserController {
 	@Autowired
 	UserServiceImplementation userService;
 
-	@GetMapping("/editing")
+	@GetMapping("/edit")
 	public String userEditing(Model model, Principal principal) {
 		User user;
 		try
@@ -64,7 +64,6 @@ public class UserController {
 		}
 
 		try {
-
 			User user1 = userService.addUser(user);
 		} 
 		catch(NullPointerException | IllegalArgumentException e)
@@ -77,14 +76,13 @@ public class UserController {
 			System.out.println("Actual Message"+ e.getMessage());
 			return "error";
 		}
-		return "redirect:/login";
-//		if (user.getRoles().equals("ROLE_ADMIN"))
-//			return "admin/dashboard";
-//		else
-//			return "user/dashboard";
+		if (user.getRoles().equals("ROLE_ADMIN"))
+			return "admin/dashboard";
+		else
+			return "user/dashboard";
 	}
 
-	@GetMapping("/dashboard")
+	@GetMapping("")
 	public String dashboard(ModelAndView model) {
 		return "user/dashboard";
 	}

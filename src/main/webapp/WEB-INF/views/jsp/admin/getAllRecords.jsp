@@ -39,6 +39,7 @@
 						<th scope="col">End Date</th>
 						<th scope="col">End Time</th>
 						<th scope="col">Remarks</th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -65,16 +66,17 @@
 						
 						
 						<td th:contenteditable="${record.status!= null and (record.status!='CANCELLED' or record.status!='APPROVED') }? true: false" th:id="'remarks' + ${iStat.count}" th:text="${record.remarks}" />
-						<td  th:with = "cancelled=${record.status=='CANCELLED'}? true: false , approved=${record.status=='APPROVED'}? true: false">
+						<td  th:with = "cancelled=${record.status=='CANCELLED'}? true: false , approved=${record.status=='APPROVED'}? true: false, returned=${record.status=='RETURNED'}?'true':'false'">
 							<button type="button" class="btn " th:classappend="${approved} ? 'btn-success': 'btn-primary'"
 								th:text="${approved} ? 'approved': 'approve'"
-								th:disabled="${approved or cancelled} ? 'true': 'false'"
+								th:disabled="${approved or cancelled or returned} ? 'true': 'false'"
 								 th:onclick="|changeBookStatus('${record.id}',1,'${iStat.count}')|" ></button>
 							<button type="button" class="btn btn-danger"
 								th:text="${cancelled} ? 'cancelled': 'cancel'"
-								th:disabled="${cancelled or approved} ? 'true': 'false'"
+								th:disabled="${cancelled or approved or returned} ? 'true': 'false'"
 								 th:onclick="|changeBookStatus('${record.id}',0,'${iStat.count}')|" ></button>
 						</td>
+
 					</tr>
 				</tbody>
 			</table>

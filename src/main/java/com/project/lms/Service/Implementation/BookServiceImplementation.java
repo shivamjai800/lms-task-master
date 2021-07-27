@@ -80,7 +80,7 @@ public class BookServiceImplementation implements BookService {
 	@Override
 	public List<Book> listByKeyword(String keyword) {
 
-		if(keyword==null)
+		if(keyword==null || keyword.equals(""))
 			return this.bookRepository.findAll();
 		return this.bookRepository.findByKeyword(keyword);
 	}

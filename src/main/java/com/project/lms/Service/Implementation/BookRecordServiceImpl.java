@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.project.lms.Entities.Book;
 import com.project.lms.Entities.UnitBook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class BookRecordServiceImpl implements BookRecordService {
 
 	@Autowired
 	private BookServiceImplementation bookService;
+
+	@Autowired
+	private UnitBookServiceImplementation unitBookService;
 
 	@Transactional
 	public void deleteBookRecordById(int requestId) {
@@ -70,5 +74,16 @@ public class BookRecordServiceImpl implements BookRecordService {
 		this.bookRecordRepository.deleteBookRecordById(br.getId());
 		return;
 	}
+
+	@Override
+	public void approveBookRecordById(int recordId) {
+		BookRecord bookRecord = this.bookRecordRepository.findBookRecordById(recordId);
+		bookRecord.setStatus("RETURNED");
+		UnitBook unitBook = this.unitBookService.getUnitBookById(bookRecord.getUnitBookReceived());
+		unitBook.setAssigned(false);
+		this.unitBookService.updateUnitBookBy(unitBook,bookRecord.getUnitBookReceived());
+		return;
+	}
+
 
 }

@@ -1,7 +1,7 @@
 function changeBookStatus(requestId, approve,columnNo)
 {
 	let status = approve==1?"APPROVED":"CANCELLED"
-	let url = "/admin/book/changeBookStatus/" + requestId;
+	let url = "/admin/records/" + requestId;
 	let remarks = document.getElementById("remarks"+columnNo).innerText;
 	$.ajax({
 		type: "PUT",

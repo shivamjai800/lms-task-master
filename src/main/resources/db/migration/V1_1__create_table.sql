@@ -1,4 +1,4 @@
-create table  book
+create table if not exists book
 (
     id       int4 not null,
     author   varchar(35),
@@ -6,7 +6,7 @@ create table  book
     title    varchar(35),
     primary key (id)
 );
-create table  book_record
+create table if not exists book_record
 (
     id                 int4 not null,
     approving_admin_id varchar(255),
@@ -19,14 +19,14 @@ create table  book_record
     username           varchar(255),
     primary key (id)
 );
-create table  unit_book
+create table if not exists unit_book
 (
     unit_book_id   varchar(255) not null,
     assigned       boolean,
     book_parent_id int4,
     primary key (unit_book_id)
 );
-create table  userr
+create table if not exists userr
 (
     username varchar(255) not null,
     active   boolean      not null,

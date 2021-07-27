@@ -31,10 +31,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		
 		if(userDetails.getRoles().equals("ROLE_ADMIN"))
 		{
-			redirectURL = "/admin/dashboard";
+			redirectURL = "/admin";
 		}
 		else
-			redirectURL = "/user/dashboard";
+			redirectURL = "/user";
 		response.sendRedirect(request.getContextPath() + redirectURL);
 		 
 		 
