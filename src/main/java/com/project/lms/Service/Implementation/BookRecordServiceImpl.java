@@ -70,7 +70,8 @@ public class BookRecordServiceImpl implements BookRecordService {
 	@Override
 	public void removeBookRecordByUsernameAndBookId(String userUsername, int bookId) {
 		List<BookRecord> bookRecords = this.bookRecordRepository.findAll();
-		BookRecord br = bookRecords.stream().filter(e->e.getUserUsername().equals(userUsername) && e.getBookId()==bookId && e.getStatus().equals("REQUESTED")).findAny().get();
+		BookRecord br = bookRecords.stream().filter(e->(e.getUserUsername().equals(userUsername) && e.getBookId()==bookId && e.getStatus().equals("REQUESTED"))).findAny().get();
+		System.out.println("Delete mapping book Record = "+br.toString());
 		this.bookRecordRepository.deleteBookRecordById(br.getId());
 		return;
 	}

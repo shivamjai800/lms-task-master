@@ -22,6 +22,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
 	public void deleteByUsername(String username);
 
-	@Query("SELECT u FROM User u WHERE u.name LIKE %?1%" + " OR u.username LIKE %?1%" + " OR u.roles LIKE %?1%")
+	@Query("SELECT u FROM User u WHERE u.name LIKE %:keyword%" + " OR u.username LIKE %:keyword%" + " OR u.roles LIKE %:keyword%")
 	public List<User> search(String keyword);
 }

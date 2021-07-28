@@ -1,21 +1,16 @@
 package com.project.lms;
 
-import org.apache.commons.collections.ArrayStack;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.stereotype.Service;
 
 
 import com.project.lms.Entities.*;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +81,7 @@ public class BookServiceImplTest{
     @Test
     public void updateBookById()
     {
-        Mockito.when(bookRepository.findById(1)).thenReturn(book);
+        Mockito.when(bookRepository.findBookById(1)).thenReturn(book);
         Mockito.when(bookRepository.save(book)).thenReturn(book);
         Book book1 = new Book();
         book1.setId(1); book1.setAuthor("Justice"); book1.setQuantity(25); book1.setTitle("jump");
@@ -112,13 +107,13 @@ public class BookServiceImplTest{
     @Test
     public void removeBookRecordRequest()
     {
-        BookRecord bookRecord = new BookRecord(); bookRecord.setBookId(1); bookRecord.setStatus("REQUESTED");
+        BookRecord bookRecord = new BookRecord(); bookRecord.setBookId(1); bookRecord.setStatus("REQUESTED"); bookRecord.setUserUsername("shivamuser");
         List<BookRecord> list = new ArrayList<BookRecord>(); list.add(bookRecord);
         book.setRequest(list);
 
-        Mockito.when(this.bookRepository.findById(1)).thenReturn(book);
+        Mockito.when(this.bookRepository.findBookById(1)).thenReturn(book);
 
-        this.bookService.removeBookRecordRequest(1);
+        this.bookService.removeBookRecordRequest(1,"shivamuser");
         assertTrue(book.getRequest().isEmpty());
     }
 

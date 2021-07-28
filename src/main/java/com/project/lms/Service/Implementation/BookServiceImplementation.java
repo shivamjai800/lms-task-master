@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.lms.Entities.Book;
 import com.project.lms.Entities.UnitBook;
-import com.project.lms.Entities.User;
 import com.project.lms.Repository.BookRepository;
 import com.project.lms.Service.BookService;
 
@@ -23,7 +22,7 @@ public class BookServiceImplementation implements BookService {
 	@Override
 	public Book getBookById(int id)
 	{
-		return this.bookRepository.findById(id);
+		return this.bookRepository.findBookById(id);
 	}
 	
 	@Override
@@ -66,7 +65,7 @@ public class BookServiceImplementation implements BookService {
 
 	@Override
 	public void updateBookById(Book book, int id) {
-		Book b = this.bookRepository.findById(id);
+		Book b = this.bookRepository.findBookById(id);
 		if(book.getId()!=id) return;
 		else
 		{
@@ -86,10 +85,9 @@ public class BookServiceImplementation implements BookService {
 	}
 
 	@Override
-	public void removeBookRecordRequest(int bookId) {
-		Book b = this.bookRepository.findById(bookId);
-		b.getRequest().removeIf(e -> e.getBookId()==bookId && e.getStatus().equals("REQUESTED"));
-		this.bookRepository.save(b);
+	public void removeBookRecordRequest(int bookId, String username) {
+		Book b = this.bookRepository.findBookById(bookId);
+		b.getRequest().removeIf(e -> e.getBookId()==bookId && e.getStatus().equals("REQUESTED") && e.getUserUsername().equals(username));
 		return;
 	}
 

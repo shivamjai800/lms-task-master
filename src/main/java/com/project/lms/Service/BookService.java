@@ -17,7 +17,7 @@ public interface BookService {
 	public void deleteBookById(int id);
 	public void updateBookById(Book book, int id);
 	public List<Book> listByKeyword(String keyword);
-	public void removeBookRecordRequest(int bookId);
+	public void removeBookRecordRequest(int bookId, String username);
 
 	public int getAvailability(int id);
 	public List<String> getIssuedUsers(int id);

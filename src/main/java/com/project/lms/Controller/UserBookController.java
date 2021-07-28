@@ -105,8 +105,8 @@ public class UserBookController {
 			Principal principal) {
 
 		try {
-			this.userService.removeBookRecordRequest(principal.getName(), bookId);
-			this.bookService.removeBookRecordRequest(bookId);
+//			this.userService.removeBookRecordRequest(principal.getName(), bookId);
+//			this.bookService.removeBookRecordRequest(bookId, principal.getName());
 			this.bookRecordService.removeBookRecordByUsernameAndBookId(principal.getName(),bookId);
 		} catch (NullPointerException e) {
 			System.out.println("Null Pointer Exception occurred in delete bookrecord of User Book Controller");
