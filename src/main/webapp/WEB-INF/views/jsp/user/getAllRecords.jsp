@@ -38,7 +38,55 @@
 						<th scope="col">BookId</th>
 						<th scope="col">Start Date</th>
 						<th scope="col">Start Time</th>
-						<th scope="col">status</th>
+						<th scope="col">
+
+							<div th:with="status1=${status}!=null?'true':'false', requested=(${status}!=null and ${status.requested}!=null) ? ${status.requested}: 'false', approved=(${status}!=null and ${status.approved}!=null) ? ${status.approved}: 'false' , returned=(${status}!=null and ${status.returned}!=null) ? ${status.approved}: 'false', cancelled=(${status}!=null and ${status.cancelled}!=null) ? 'true': 'false'"
+								 class="dropdown" tabindex="100">
+								<button id="status" class="btn btn-primary dropdown-toggle mr-4" type="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">Status(ALL)</button>
+							<div class="dropdown-menu">
+							<a class="dropdown-item">
+							  <!-- Default unchecked -->
+							  <div class="custom-control custom-checkbox">
+								<input th:checked="${(requested and approved and returned and cancelled)?true:false} "
+                                       type="checkbox" class="custom-control-input" id="all">
+								<label class="custom-control-label" for="all">ALL</label>
+							  </div>
+							</a>
+							<a class="dropdown-item" href="">
+							  <div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="requested"
+                                       th:checked="${(requested ) ?true:false}">
+								<label class="custom-control-label" for="requested" >Requested</label>
+							  </div>
+							</a>
+							<a class="dropdown-item" href="">
+							  <div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="approved"
+                                       th:checked="${(approved ) ?true:false}">
+								<label class="custom-control-label" for="approved">Approved</label>
+							  </div>
+							</a>
+
+							<a class="dropdown-item" href="">
+							  <div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="cancelled"
+                                       th:checked="${(cancelled ) ?true:false}">
+								<label class="custom-control-label" for="cancelled">Cancelled</label>
+							  </div>
+							</a>
+							<a class="dropdown-item" href="">
+							  <div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="returned"
+                                       th:checked="${(returned ) ?true:false}">
+								<label class="custom-control-label" for="returned">Returned</label>
+							  </div>
+							</a>
+						  </div>
+							</div>
+
+						</th>
 						<th scope="col">Unit Book Given</th>
 						<th scope="col">User Username</th>
 						<th scope="col">Admin Id</th>
@@ -82,7 +130,18 @@
 					</tr>
 				</tbody>
 			</table>
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+				<li th:if="${currentPage !=0}" class="page-item"><button class="page-link" th:onclick="|ontoPage('${currentPage-1}')|">Previous</button></li>
+				<li th:classappend="${currentPage == (i-1) ? 'active': ''}"
+                    th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"><button class="page-link"
+																							   th:onclick="|ontoPage(' ${i-1}')|"
+                                                                                          th:text="${i}"></button></li>
+				<li th:if="${currentPage+1 != totalPages}" class="page-item"><button class="page-link" th:onclick="|ontoPage('${currentPage+1}')|">Next</button></li>
+			  </ul>
+			</nav>
 		</span>
+    <button class="btn btn-primary" onclick="applyfilter()">Apply Filter</button>
 </div>
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -104,7 +163,55 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/common/popUp.js"></script>
 <script type="text/javascript" src="/js/user/getAllRecords.js"></script>
+<script>
+	function applyfilter()
+	{
+		helper(0);
+	}
+	function ontoPage(pageNo)
+	{
+		helper(pageNo);
+	}
 
+    function helper(pageNo) {
+        let requested = document.getElementById('requested').checked
+        let cancelled = document.getElementById('cancelled').checked
+        let approved = document.getElementById('approved').checked
+        let returned = document.getElementById('returned').checked
+        let all = document.getElementById('all').checked;
+
+		let form = document.createElement('form');
+		form.action = '/user/records/'+pageNo;
+		form.method = 'POST';
+		let input = document.createElement('input');
+		input.setAttribute("type","checkbox");
+		input.setAttribute("name","requested");
+		input.checked = requested
+		// input.setAttribute("checked",requested?"true":"false");
+		form.appendChild(input);
+
+		input = document.createElement('input');
+		input.setAttribute("type","checkbox");
+		input.setAttribute("name","returned");
+		input.checked = returned
+		form.appendChild(input);
+
+		input = document.createElement('input');
+		input.setAttribute("type","checkbox");
+		input.setAttribute("name","approved");
+		input.checked = approved
+		form.appendChild(input);
+
+		input = document.createElement('input');
+		input.setAttribute("type","checkbox");
+		input.setAttribute("name","cancelled");
+		input.checked = cancelled
+		form.appendChild(input);
+		document.body.append(form);
+		form.submit();
+
+    }
+</script>
 
 </body>
 </html>

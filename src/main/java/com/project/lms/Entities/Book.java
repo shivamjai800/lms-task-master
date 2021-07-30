@@ -1,9 +1,6 @@
 package com.project.lms.Entities;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -41,6 +38,7 @@ public class Book {
 	public Book() {
 		super();
 		this.unitBooks = new HashSet<UnitBook>();
+		this.request = new ArrayList<BookRecord>();
 	}
 	
 	public int getId() {

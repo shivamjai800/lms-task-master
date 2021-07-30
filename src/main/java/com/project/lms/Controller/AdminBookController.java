@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Null;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -116,8 +117,8 @@ public class AdminBookController {
 	}
 
 //  Approving the request related to the book.
-	@GetMapping(value = "/records")
-	public String getAllRecords(Model model) {
+	@GetMapping(value = "/records/{page}")
+	public String getAllRecords(@Param("page") Integer page,Model model) {
 
 
 		try{

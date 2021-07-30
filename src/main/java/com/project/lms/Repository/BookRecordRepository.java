@@ -4,15 +4,20 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.project.lms.Entities.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.project.lms.Entities.BookRecord;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRecordRepository extends CrudRepository<BookRecord, Integer> {
+public interface BookRecordRepository extends PagingAndSortingRepository<BookRecord, Integer>, JpaSpecificationExecutor<BookRecord> {
 	
 	 @Transactional
 	  @Modifying
@@ -23,5 +28,9 @@ public interface BookRecordRepository extends CrudRepository<BookRecord, Integer
 	public BookRecord findBookRecordById(@Param("id") int id);
 	 
 	public List<BookRecord> findAll();
-	
+
+	public Page<BookRecord> findAll(Specification<BookRecord> spec, Pageable page);
+
+	@Query(value = "SELECT bR from BookRecord bR where  bR.userUsername = :userUsername")
+	public Page<BookRecord> findBookRecordByUserUsername(String userUsername, Pageable perPageable);
 }

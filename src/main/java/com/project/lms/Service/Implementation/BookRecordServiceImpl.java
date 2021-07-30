@@ -1,18 +1,33 @@
 package com.project.lms.Service.Implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import com.project.lms.Entities.Book;
+import com.project.lms.Entities.Status;
 import com.project.lms.Entities.UnitBook;
+import com.project.lms.Repository.BookRecordSpecs;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.project.lms.Entities.BookRecord;
 import com.project.lms.Repository.BookRecordRepository;
 import com.project.lms.Service.BookRecordService;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class BookRecordServiceImpl implements BookRecordService {
@@ -84,6 +99,29 @@ public class BookRecordServiceImpl implements BookRecordService {
 		unitBook.setAssigned(false);
 		this.unitBookService.updateUnitBookBy(unitBook,bookRecord.getUnitBookReceived());
 		return;
+	}
+
+	@Override
+	public Page<BookRecord> findBookRecordByUserUsername(String username, int pageNo ) {
+
+		Pageable pageable = PageRequest.of(pageNo, 5);
+		Page<BookRecord> bookRecords = this.bookRecordRepository.findBookRecordByUserUsername(username,pageable);
+		return bookRecords;
+	}
+	@Override
+	public Page<BookRecord> findBookRecordByUserUsername(String username, int pageNo, Status status ) {
+
+
+		Pageable pageable = PageRequest.of(pageNo, 1);
+
+
+		Page<BookRecord> bookRecords = this.bookRecordRepository.findAll(BookRecordSpecs.filterByUsernameAndStatus(username,status),pageable);
+		System.out.println("Status = "+status.toString());
+//		bookRecords.forEach(e-> System.out.println("custom query"+e.toString()));
+//		Page<BookRecord> bookRecords = this.bookRecordRepository.findBookRecordByUserUsername(username,pageable);
+		return bookRecords;
+
+
 	}
 
 

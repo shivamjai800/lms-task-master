@@ -15,7 +15,7 @@
 
 			<li class="nav-item"><a class="nav-link"
 				href="/user/edit">Edit </a></li>
-			<li><a class="nav-link" href="/user/records"><button
+			<li><a class="nav-link" href="/user/records/0"><button
 						class="btn btn-outline-success my-2 my-sm-0">All Records</button></a></li>
 			<li><a class="nav-link" href="/logout"><button
 						class="btn btn-outline-success my-2 my-sm-0">Logout</button></a></li>

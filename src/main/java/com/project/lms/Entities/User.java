@@ -1,10 +1,7 @@
 package com.project.lms.Entities;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.security.DeclareRoles;
 import javax.persistence.*;
@@ -41,6 +38,7 @@ public class User {
  
     public User() {
         super();
+        request = new ArrayList<BookRecord>();
     }
     
 	public String getUsername() {
