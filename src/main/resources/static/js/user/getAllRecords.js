@@ -42,7 +42,7 @@ function precheckStatus()
 }
 document.getElementById('requested').onclick= function() {precheckStatus()};
 document.getElementById('cancelled').onclick= function() {precheckStatus()};
-document.getElementById('cancelled').onclick= function() {precheckStatus()};
+document.getElementById('approved').onclick= function() {precheckStatus()};
 document.getElementById('returned').onclick= function() {precheckStatus()};
 document.getElementById('all').onclick = function (){
     let requested = document.getElementById('requested');
@@ -72,4 +72,53 @@ document.getElementById('all').onclick = function (){
     {
         status.innerText = "Status(ALL)"
     }
+}
+
+function applyfilter()
+{
+    helper(0);
+}
+function ontoPage(pageNo)
+{
+    helper(pageNo);
+}
+
+function helper(pageNo) {
+    let requested = document.getElementById('requested').checked
+    let cancelled = document.getElementById('cancelled').checked
+    let approved = document.getElementById('approved').checked
+    let returned = document.getElementById('returned').checked
+    let all = document.getElementById('all').checked;
+
+    let form = document.createElement('form');
+    form.action = '/user/records/'+pageNo;
+    form.method = 'POST';
+    let input = document.createElement('input');
+    input.setAttribute("type","checkbox");
+    input.setAttribute("name","requested");
+    input.checked = requested
+    // input.setAttribute("checked",requested?"true":"false");
+    form.appendChild(input);
+
+    input = document.createElement('input');
+    input.setAttribute("type","checkbox");
+    input.setAttribute("name","returned");
+    input.checked = returned
+    form.appendChild(input);
+
+    input = document.createElement('input');
+    input.setAttribute("type","checkbox");
+    input.setAttribute("name","approved");
+    input.checked = approved
+    form.appendChild(input);
+
+    input = document.createElement('input');
+    input.setAttribute("type","checkbox");
+    input.setAttribute("name","cancelled");
+    input.checked = cancelled
+    form.appendChild(input);
+    document.body.append(form);
+    form.style.display="none";
+    form.submit();
+
 }

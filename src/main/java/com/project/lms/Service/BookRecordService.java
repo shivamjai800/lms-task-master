@@ -14,7 +14,7 @@ public interface BookRecordService {
 	public BookRecord createBookRecord(BookRecord bookRecord,String userUsername,int bookId);
 	public void deleteBookRecordById(int requestId);
 	public BookRecord findBookRecordById(int requestId);
-	public List<BookRecord> getAllBookRecord();
+	public Page<BookRecord> getAllBookRecord(int pageNo, Status status);
 	
 	public void updateBookRecordById(BookRecord bNew, int requestId);
 

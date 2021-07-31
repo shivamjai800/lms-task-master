@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.project.lms.Entities.BookRecord;
@@ -61,8 +62,10 @@ public class BookRecordServiceImpl implements BookRecordService {
 	}
 
 	@Override
-	public List<BookRecord> getAllBookRecord() {
-		return this.bookRecordRepository.findAll();
+	public Page<BookRecord> getAllBookRecord(int pageNo,Status status) {
+		Pageable pageable = PageRequest.of(pageNo, 2, Sort.by("startDateTime").descending());
+		Page<BookRecord> bookRecords =this.bookRecordRepository.findAll(BookRecordSpecs.filterStatus(status),pageable);
+		return bookRecords;
 	}
 
 	@Override

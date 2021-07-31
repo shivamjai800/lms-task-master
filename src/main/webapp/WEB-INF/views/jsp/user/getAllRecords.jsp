@@ -40,7 +40,7 @@
 						<th scope="col">Start Time</th>
 						<th scope="col">
 
-							<div th:with="status1=${status}!=null?'true':'false', requested=(${status}!=null and ${status.requested}!=null) ? ${status.requested}: 'false', approved=(${status}!=null and ${status.approved}!=null) ? ${status.approved}: 'false' , returned=(${status}!=null and ${status.returned}!=null) ? ${status.approved}: 'false', cancelled=(${status}!=null and ${status.cancelled}!=null) ? 'true': 'false'"
+							<div th:with="status1=${status}!=null?'true':'false', requested=(${status}!=null and ${status.requested}!=null) ? ${status.requested}: 'false', approved=(${status}!=null and ${status.approved}!=null) ? ${status.approved}: 'false' , returned=(${status}!=null and ${status.returned}!=null) ? ${status.returned}: 'false', cancelled=(${status}!=null and ${status.cancelled}!=null) ? ${status.cancelled}: 'false'"
 								 class="dropdown" tabindex="100">
 								<button id="status" class="btn btn-primary dropdown-toggle mr-4" type="button"
                                         data-toggle="dropdown"
@@ -134,10 +134,10 @@
 			  <ul class="pagination">
 				<li th:if="${currentPage !=0}" class="page-item"><button class="page-link" th:onclick="|ontoPage('${currentPage-1}')|">Previous</button></li>
 				<li th:classappend="${currentPage == (i-1) ? 'active': ''}"
-                    th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"><button class="page-link"
+                    th:each="i : ${#numbers.sequence(T(Math).min(1,totalPages),totalPages)}" class="page-item"><button class="page-link"
 																							   th:onclick="|ontoPage(' ${i-1}')|"
                                                                                           th:text="${i}"></button></li>
-				<li th:if="${currentPage+1 != totalPages}" class="page-item"><button class="page-link" th:onclick="|ontoPage('${currentPage+1}')|">Next</button></li>
+				<li th:if="${totalPages!=0 and currentPage+1 != totalPages}" class="page-item"><button class="page-link" th:onclick="|ontoPage('${currentPage+1}')|">Next</button></li>
 			  </ul>
 			</nav>
 		</span>
@@ -164,53 +164,7 @@
 <script type="text/javascript" src="/js/common/popUp.js"></script>
 <script type="text/javascript" src="/js/user/getAllRecords.js"></script>
 <script>
-	function applyfilter()
-	{
-		helper(0);
-	}
-	function ontoPage(pageNo)
-	{
-		helper(pageNo);
-	}
 
-    function helper(pageNo) {
-        let requested = document.getElementById('requested').checked
-        let cancelled = document.getElementById('cancelled').checked
-        let approved = document.getElementById('approved').checked
-        let returned = document.getElementById('returned').checked
-        let all = document.getElementById('all').checked;
-
-		let form = document.createElement('form');
-		form.action = '/user/records/'+pageNo;
-		form.method = 'POST';
-		let input = document.createElement('input');
-		input.setAttribute("type","checkbox");
-		input.setAttribute("name","requested");
-		input.checked = requested
-		// input.setAttribute("checked",requested?"true":"false");
-		form.appendChild(input);
-
-		input = document.createElement('input');
-		input.setAttribute("type","checkbox");
-		input.setAttribute("name","returned");
-		input.checked = returned
-		form.appendChild(input);
-
-		input = document.createElement('input');
-		input.setAttribute("type","checkbox");
-		input.setAttribute("name","approved");
-		input.checked = approved
-		form.appendChild(input);
-
-		input = document.createElement('input');
-		input.setAttribute("type","checkbox");
-		input.setAttribute("name","cancelled");
-		input.checked = cancelled
-		form.appendChild(input);
-		document.body.append(form);
-		form.submit();
-
-    }
 </script>
 
 </body>

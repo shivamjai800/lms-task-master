@@ -32,6 +32,8 @@ public class BookRecordSpecs {
             if(status.isRequested())
                 predicateList.add(criteriaBuilder.equal(bookRecordRoot.get("status"),"REQUESTED"));
             Predicate allStatusCondition = criteriaBuilder.or(predicateList.toArray(new Predicate[0]));
+//            System.out.println("Inside specs filter status = "+status.toString());
+
             return allStatusCondition;
 
         };
@@ -48,6 +50,7 @@ public class BookRecordSpecs {
     }
     public static Specification<BookRecord> filterByUsernameAndStatus(String username, Status status)
     {
+        System.out.println("Inside custom specs filter by username and status = "+status.toString());
         return Specification.where(filterUsername(username)).and(filterStatus(status));
     }
 }

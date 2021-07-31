@@ -8,7 +8,9 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Null;
 
+import com.project.lms.Entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.beans.factory.annotation.*;
-import com.project.lms.Entities.Book;
-import com.project.lms.Entities.BookRecord;
-import com.project.lms.Entities.UnitBook;
-import com.project.lms.Entities.User;
 import com.project.lms.Service.Implementation.BookRecordServiceImpl;
 import com.project.lms.Service.Implementation.BookServiceImplementation;
 import com.project.lms.Service.Implementation.UserServiceImplementation;
@@ -117,14 +115,22 @@ public class AdminBookController {
 	}
 
 //  Approving the request related to the book.
-	@GetMapping(value = "/records/{page}")
-	public String getAllRecords(@Param("page") Integer page,Model model) {
+	@GetMapping(value = "/records/{pageNo}")
+	public String getAllRecords(@PathVariable("pageNo") int pageNo, Model model, Status status) {
 
-
+		status.setReturned(true);
+		status.setCancelled(true);
+		status.setApproved(true);
+		status.setRequested(true);
 		try{
-			List<BookRecord> records = this.bookRecordService.getAllBookRecord();
-			records.forEach(e-> System.out.println(e.toString()));
+			Page<BookRecord> records = this.bookRecordService.getAllBookRecord(pageNo,status);
+
+//			records.forEach(e-> System.out.println(e.toString()));
 			model.addAttribute("records", records);
+//			model.addAttribute("records",null);
+			model.addAttribute("currentPage",pageNo);
+			model.addAttribute("totalPages", records.getTotalPages());
+			model.addAttribute(status);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -134,6 +140,7 @@ public class AdminBookController {
 		catch(NullPointerException e)
 		{
 			System.out.println("SOme of the argument might be wrong ");
+			System.out.println(e.getMessage());
 		}
 
 		return "admin/getAllRecords";
@@ -153,5 +160,30 @@ public class AdminBookController {
 		}
 		return new ResponseEntity<>("Book status is changed" + bookRecord.getStatus() + " Successfully ",
 				HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/records/{pageNo}", consumes = "*/*")
+	public String applyFilterOnBookRecords(@PathVariable("pageNo") int pageNo, Model model, Status status) {
+		try{
+			Page<BookRecord> records = this.bookRecordService.getAllBookRecord(pageNo,status);
+
+			records.forEach(e-> System.out.println(e.toString()));
+			model.addAttribute("records", records);
+			model.addAttribute("currentPage",pageNo);
+			model.addAttribute("totalPages", records.getTotalPages());
+			model.addAttribute(status);
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("IllegalArgumentException Exception occurred in getAllRecords of Admin Book Controller");
+			System.out.println("Actual message = " + e.getMessage());
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("SOme of the argument might be wrong ");
+			System.out.println(e.getMessage());
+		}
+
+		return "admin/getAllRecords";
 	}
 }

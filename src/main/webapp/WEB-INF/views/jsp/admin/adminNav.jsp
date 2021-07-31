@@ -18,7 +18,7 @@
 
 			<li><a class="nav-link" href="/admin/books/addBook"><button
 						class="btn btn-outline-success my-2 my-sm-0">AddBook</button></a></li>
-			<li><a class="nav-link" href="/admin/records"><button
+			<li><a class="nav-link" href="/admin/records/0"><button
 						class="btn btn-outline-success my-2 my-sm-0">All Records</button></a></li>
 		</ul>
 
