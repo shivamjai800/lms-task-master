@@ -13,10 +13,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
-import com.project.lms.Entities.Book;
-import com.project.lms.Entities.Status;
-import com.project.lms.Entities.UnitBook;
+import com.project.lms.Entities.*;
 import com.project.lms.Repository.BookRecordSpecs;
+import javafx.util.Pair;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.project.lms.Entities.BookRecord;
 import com.project.lms.Repository.BookRecordRepository;
 import com.project.lms.Service.BookRecordService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -125,6 +123,41 @@ public class BookRecordServiceImpl implements BookRecordService {
 		return bookRecords;
 
 
+	}
+
+	@Override
+	public List<Pair<Book,Long>> topBookRecords(int size) {
+		Pageable pageable = PageRequest.of(0,size);
+		LocalDateTime required_date_time = LocalDateTime.now().minusDays(30);
+		List<Object[]> list = this.bookRecordRepository.topRecords(required_date_time, pageable);
+		List<Pair<Book,Long>> pairs = new ArrayList<>();
+		list.forEach(e->{
+			Book book = new Book((Integer)e[0]);
+			book.setAuthor((String) e[1]);
+			book.setQuantity((Integer)e[2]);
+			book.setTitle((String)e[3]);
+			Pair<Book,Long> p = new Pair<>(book,(Long) e[4]);
+//			System.out.println(p.toString());
+			pairs.add(p);
+		});
+		return pairs;
+//		return null;
+
+	}
+
+	@Override
+	public List<Pair<User, Long>> topUserRecords(int size) {
+		Pageable pageable = PageRequest.of(0,size);
+		LocalDateTime required_date_time = LocalDateTime.now().minusDays(30);
+		List<Object[]> list = this.bookRecordRepository.topUsers(required_date_time, pageable);
+		List<Pair<User,Long>> pairs = new ArrayList<>();
+		list.forEach(e->{
+			User user = (User) e[0];
+			Pair<User,Long> p = new Pair<>(user,(Long) e[1]);
+			System.out.println(user.toString()+" "+p.getValue());
+			pairs.add(p);
+		});
+		return pairs;
 	}
 
 

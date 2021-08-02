@@ -40,7 +40,11 @@ public class Book {
 		this.unitBooks = new HashSet<UnitBook>();
 		this.request = new ArrayList<BookRecord>();
 	}
-	
+
+	public Book(int id) {
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -3,16 +3,15 @@ package com.project.lms.Repository;
 import com.project.lms.Entities.Book;
 import com.project.lms.Entities.BookRecord;
 import com.project.lms.Entities.Status;
+import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.script.ScriptEngine;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,5 +52,22 @@ public class BookRecordSpecs {
         System.out.println("Inside custom specs filter by username and status = "+status.toString());
         return Specification.where(filterUsername(username)).and(filterStatus(status));
     }
+
+//    public static Specification<BookRecord> getTopBooks()
+//    {
+//        return (bookRecordRoot, criteriaQuery,criteriaBuilder )-> {
+//            Root<BookRecord> bookRecord = criteriaQuery.from(BookRecord.class);
+//            Subquery<BookRecord> bookRecordSubquery = criteriaQuery.subquery(BookRecord.class);
+//            bookRecordSubquery.select(bookRecordRoot);
+//            bookRecordSubquery.where(criteriaBuilder.greaterThanOrEqualTo(bookRecord.get("startDateTime"), LocalDateTime.now().minusDays(30)));
+//            bookRecordSubquery.groupBy(bookRecordRoot.get("bookId"));
+//
+//            List<Selection<?>> selections = new ArrayList<>();
+//            Root<Book> book = criteriaQuery.from(Book.class);
+//            selections.add(book.get("bookId"));
+//            selections.add(book.get)
+//
+//        };
+//    }
 }
 

@@ -91,13 +91,6 @@ public class FrontController {
 //    }
 
 
-    @GetMapping("/test")
-    public String test()
-    {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        System.out.println(bCryptPasswordEncoder.encode("123456"));
-        return "/welcome";
-    }
     
 
 }

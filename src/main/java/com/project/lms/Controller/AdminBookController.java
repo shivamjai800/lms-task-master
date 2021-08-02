@@ -1,29 +1,23 @@
 package com.project.lms.Controller;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 
 import com.project.lms.Entities.*;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.beans.factory.annotation.*;
 import com.project.lms.Service.Implementation.BookRecordServiceImpl;
 import com.project.lms.Service.Implementation.BookServiceImplementation;
-import com.project.lms.Service.Implementation.UserServiceImplementation;
-import java.lang.reflect.Field;
 
 @Controller
 @RequestMapping("/admin")
@@ -185,5 +179,62 @@ public class AdminBookController {
 		}
 
 		return "admin/getAllRecords";
+	}
+
+
+	// <------ statistics -->
+
+	@GetMapping("/statistics/books")
+	public String getBookStatistics(Model model)
+	{
+		try
+		{
+			List<Pair<Book,Long>> statistics = this.bookRecordService.topBookRecords(10);
+			statistics.forEach(e -> {
+//				System.out.println("Here = ");
+				System.out.println(e.getKey().toString()+" "+e.getValue().toString());
+
+			});
+			System.out.println("size = "+statistics.size());
+			model.addAttribute("statistics", statistics);
+		}
+		catch (NullPointerException e)
+		{
+			System.out.println("Null Pointer Exception from getBooksStatistics from admin COntroller");
+			System.out.println(e.getMessage());
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Illegal Argument Exception from get getBooksStatistics from admin COntroller ");
+			System.out.println(e.getMessage());
+		}
+		return "admin/bookStatistics";
+	}
+
+	@GetMapping("/statistics/user")
+	public String getUserStatistics(Model model)
+	{
+		try
+		{
+			List<Pair<User,Long>> statistics = this.bookRecordService.topUserRecords(10);
+//			statistics.forEach(e -> {
+////				System.out.println("Here = ");
+//				System.out.println(e.getKey().toString()+" "+e.getValue().toString());
+//
+//			});
+//			System.out.println("size = "+statistics.size());
+			model.addAttribute("statistics", statistics);
+		}
+		catch (NullPointerException e)
+		{
+			System.out.println("Null Pointer Exception from getBooksStatistics from admin COntroller");
+			System.out.println(e.getMessage());
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Illegal Argument Exception from get getBooksStatistics from admin COntroller ");
+			System.out.println(e.getMessage());
+		}
+		return "admin/userStatistics";
 	}
 }
