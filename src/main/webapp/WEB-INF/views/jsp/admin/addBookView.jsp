@@ -39,7 +39,7 @@
 					class="text-primary">Book</span>Form
 			</h1>
 			<form action="#" th:action="@{/admin/book}" method="post"
-				th:object="${book}">
+				th:object="${book}" enctype="multipart/form-data">
 				<div class="form-group">
 					<label for="title">Title</label> <input type="text" id="title" name="title"
 						class="form-control" placeholder="title" th:value="${book.title}"
@@ -64,6 +64,10 @@
 
 					<div novalidate th:each="e : ${#fields.errors('quantity')}"
 						th:text="${e}" class="invalid-feedback"></div>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="image">Image File</label>
+					<input name="bookImage" type="file" class="form-control" id="image" />
 				</div>
 				<div class="container text-center">
 					<button type="submit" class="btn btn-primary">Submit</button>

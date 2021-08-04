@@ -21,6 +21,13 @@
 	
 }
 }
+.table-image{
+	background-color: #fff;
+	border: 1px solid #dee2e6;
+	border-radius: .25rem;
+	max-width: 15%;
+	height: auto;
+}
 </style>
 </head>
 <body>
@@ -31,6 +38,7 @@
 				<thead>
 					<tr>
 						<th scope="col">S.NO</th>
+						<th scope="col">Image</th>
 						<th scope="col">BookId</th>
 						<th scope="col">Title</th>
 						<th scope="col">Author</th>
@@ -40,6 +48,9 @@
 				<tbody>
 					<tr th:id="'row' + ${iStat.count}" th:each="book, iStat: ${books}">
 						<td th:text="${iStat.count}" />
+						<td>
+							<img class="table-image" alt=" image" th:src="@{'/image/'+${book.image}}">
+						</td>
 						<td th:id="'bookId' + ${iStat.count}" th:text="${book.id}" />
 						<td th:id="'title' + ${iStat.count}" th:text="${book.title}" />
 						<td th:id="'author' + ${iStat.count}" th:text="${book.author}" />

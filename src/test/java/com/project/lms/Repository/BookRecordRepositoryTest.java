@@ -2,6 +2,7 @@ package com.project.lms.Repository;
 
 import com.project.lms.Entities.Book;
 import com.project.lms.Entities.BookRecord;
+import com.project.lms.Entities.Status;
 import com.project.lms.Entities.User;
 import javafx.util.Pair;
 import org.apache.tomcat.jni.Local;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
@@ -52,12 +54,11 @@ public class BookRecordRepositoryTest {
         {
             bookRecord = new BookRecord();
             bookRecord.setBookId(book.getId());
-            bookRecord.setStatus("REQUESTED");
+            String status = i%2==0? "REQUESTED": "APPROVED";
+            bookRecord.setStatus(status);
             bookRecord.setUserUsername(user.getUsername());
             bookRecord.setBookId(book.getId());
-            bookRecord.setStartDateTime(LocalDateTime.now());
-//            user.getRequest().add(bookRecord);
-//            book.getRequest().add(bookRecord);
+            bookRecord.setStartDateTime(LocalDateTime.now().minusDays(2));
             bookRecord = this.bookRecordRepository.save(bookRecord);
             list.add(bookRecord);
         }
@@ -96,7 +97,57 @@ public class BookRecordRepositoryTest {
         before();
         List<BookRecord> l = this.bookRecordRepository.findAll();
         Assert.assertEquals(list.size(),l.size());
+        Assert.assertEquals(list,l);
         after();
+    }
+
+    @Test
+    @Rollback
+    public void findAllSpecification()
+    {
+        before();
+        Status status = new Status();
+        status.setRequested(true);
+        status.setApproved(false);
+        status.setCancelled(false);
+        status.setReturned(false);
+        Pageable pageable = PageRequest.of(0,3);
+        Page<BookRecord> l = this.bookRecordRepository.findAll(BookRecordSpecs.filterStatus(status),pageable);
+        Assert.assertEquals(1,l.getTotalPages());
+        Assert.assertEquals(2 ,l.getTotalElements());
+
+        status.setApproved(true);
+        l = this.bookRecordRepository.findAll(BookRecordSpecs.filterStatus(status),pageable);
+        Assert.assertEquals(1,l.getTotalPages());
+        Assert.assertEquals(3,l.getTotalElements());
+        after();
+    }
+
+
+
+
+    @Test
+    @Rollback
+    public void findBookRecordByUserUsername()
+    {
+        before();
+        Pageable pageable = PageRequest.of(0,2);
+        Page<BookRecord> page = this.bookRecordRepository.findBookRecordByUserUsername("userr",pageable);
+        Assert.assertEquals(2,page.getTotalPages());
+        Assert.assertEquals(2,page.getNumberOfElements());
+        Assert.assertEquals(3,page.getTotalElements());
+        after();
+    }
+
+    @Test
+    @Rollback
+    public void topRecords()
+    {
+        before();
+        LocalDateTime x = LocalDateTime.now().minusDays(3);
+        Pageable pageable = PageRequest.of(0,3);
+        List<Object[]> list1 = this.bookRecordRepository.topRecords(x,pageable);
+        Assert.assertEquals(1, list1.size());
     }
 
     @Test

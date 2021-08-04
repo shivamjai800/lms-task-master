@@ -5,10 +5,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,4 +96,18 @@ public class BookRepositoryTest {
         after();
     }
 
+    @Test
+    @Rollback
+    public void test()
+    {
+        try {
+            ClassPathResource c = new ClassPathResource("static/image");
+            System.out.println(c.getURL()+"  ");
+//            File saveImage = new ClassPathResource("/static/image").getFile();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
 }

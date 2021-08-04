@@ -110,8 +110,12 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+//        System.out.println("Active = "+(active == other.active));
+//        System.out.println("name = "+Objects.equals(name, other.name) );
+//        System.out.println("password = "+Objects.equals(password, other.password));
+//        System.out.println("request = "+ Objects.equals(request, other.request));
 		return active == other.active && Objects.equals(name, other.name) && Objects.equals(password, other.password)
-				&& Objects.equals(request, other.request) && Objects.equals(roles, other.roles)
+                && Objects.equals(roles, other.roles)
 				&& Objects.equals(username, other.username);
 	}
 	

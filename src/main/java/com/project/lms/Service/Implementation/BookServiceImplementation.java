@@ -1,16 +1,24 @@
 package com.project.lms.Service.Implementation;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.project.lms.Entities.Book;
 import com.project.lms.Entities.UnitBook;
 import com.project.lms.Repository.BookRepository;
 import com.project.lms.Service.BookService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class BookServiceImplementation implements BookService {
@@ -43,8 +51,28 @@ public class BookServiceImplementation implements BookService {
 	}
 
 	@Override
-	public Book addBook(Book book) {
-		
+	public Book addBook(Book book, MultipartFile bookImage) {
+//		System.out.println("Insid e the add book of the service Implementation");
+
+		book = this.bookRepository.save(book);
+		if(!bookImage.isEmpty())
+		{
+			try {
+				book.setImage("BookImage"+book.getId());
+				File saveImage = new ClassPathResource("static/image").getFile();
+
+//				System.out.println(saveImage.getAbsolutePath()+"  ");;
+				Path path = Paths.get(saveImage.getAbsolutePath()+File.separator+book.getImage());
+				Files.copy(bookImage.getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
+//				System.out.println("File is saved");
+			}
+			catch (IOException e)
+			{
+				System.out.println("Add book service implementation in service class");
+				System.out.println(e.getMessage());
+			}
+
+		}
 		book = this.bookRepository.save(book);
 		for(int i=1;i<=book.getQuantity();i++)
 		{

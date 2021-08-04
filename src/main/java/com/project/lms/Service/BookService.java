@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.project.lms.Entities.Book;
 import com.project.lms.Entities.User;
+import org.springframework.web.multipart.MultipartFile;
+
 @Service("BookService")
 public interface BookService {
 	
@@ -13,7 +15,7 @@ public interface BookService {
 	public List<Book> getAllBooks();
 	public List<Book> getTheBookByTitle(String title);
 	public List<Book> getTheBookByAuthor(String author);
-	public Book addBook(Book book);
+	public Book addBook(Book book, MultipartFile bookImage);
 	public void deleteBookById(int id);
 	public void updateBookById(Book book, int id);
 	public List<Book> listByKeyword(String keyword);

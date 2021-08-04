@@ -1,6 +1,6 @@
-insert into book(id,author,title,quantity) values(1,'William Shakespare','Merchant of Venice', 3);
-insert into book(id,author,title,quantity) values(2,'Paulo Coelho' , 'The Alchemist',4);
-insert into book(id,author,title,quantity) values(3, 'George Bernard Shaw' , 'Arms and the Man', 5);
+insert into book(id,author,image,title,quantity) values(1,'William Shakespare','BookImage1','Merchant of Venice', 3);
+insert into book(id,author,image,title,quantity) values(2,'Paulo Coelho' , 'BookImage2','The Alchemist',4);
+insert into book(id,author,image,title,quantity) values(3, 'George Bernard Shaw' ,'BookImage3', 'Arms and the Man', 5);
 
 insert into unit_book(unit_book_id, assigned ,book_parent_id) values('1_1',false,1);
 insert into unit_book(unit_book_id, assigned ,book_parent_id) values('1_2',false,1);

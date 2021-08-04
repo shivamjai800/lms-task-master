@@ -64,20 +64,12 @@ public class UserRepositoryTest {
         before();
         userRepository.save(user);
         User user1 = userRepository.findByUsername(user.getUsername());
+//        System.out.println(user1.toString()+" "+user.toString());
         assertTrue(user1.equals(user));
         after();
     }
 
-    @Test
-    @Rollback
-    public void findUser()
-    {
-        before();
-        user = this.userRepository.findByUsername("user_user1");
-        assertTrue(user.getUsername().equals("user_user1"));
-        assertTrue(user.getRoles().equals("ROLE_USER"));
-        after();
-    }
+
 
     @Test
     @Rollback
@@ -90,7 +82,16 @@ public class UserRepositoryTest {
         });
         after();
     }
-
+    @Test
+    @Rollback
+    public void findByUsername()
+    {
+        before();
+        user = this.userRepository.findByUsername("user_user1");
+        assertTrue(user.getUsername().equals("user_user1"));
+        assertTrue(user.getRoles().equals("ROLE_USER"));
+        after();
+    }
     @Test
     @Rollback
     public void deleteByUsername()

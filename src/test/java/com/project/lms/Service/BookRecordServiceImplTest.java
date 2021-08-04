@@ -1,4 +1,4 @@
-package com.project.lms;
+package com.project.lms.Service;
 
 
 import com.project.lms.Service.Implementation.BookServiceImplementation;
@@ -20,6 +20,7 @@ import com.project.lms.Entities.*;
 import com.project.lms.Repository.*;
 import com.project.lms.Service.Implementation.BookRecordServiceImpl;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -50,6 +51,12 @@ public class BookRecordServiceImplTest {
         bookRecord.setRemarks("");
     }
     @Test
+    public void deleteBookRecordById(){
+        Mockito.doNothing().when(bookRecordRepository).deleteBookRecordById(1);
+        bookRecordService.deleteBookRecordById(1);
+        Mockito.verify(bookRecordRepository,Mockito.times(1)).deleteBookRecordById(1);
+    }
+    @Test
     public void createBookRecord(){
         Mockito.when(bookRecordRepository.save(bookRecord)).thenReturn(bookRecord);
         BookRecord bookRecord1 = this.bookRecordService.createBookRecord(bookRecord,"shivamuser",1);
@@ -57,12 +64,7 @@ public class BookRecordServiceImplTest {
         assertTrue(bookRecord1.getStatus().equals("REQUESTED"));
     }
 
-    @Test
-    public void deleteBookRecordById(){
-        Mockito.doNothing().when(bookRecordRepository).deleteBookRecordById(1);
-        bookRecordService.deleteBookRecordById(1);
-        Mockito.verify(bookRecordRepository,Mockito.times(1)).deleteBookRecordById(1);
-    }
+
 
     @Test
     public void findBookRecordById(){
@@ -80,6 +82,7 @@ public class BookRecordServiceImplTest {
             list.add(book1);
         });
         Mockito.when(bookRecordRepository.findAll()).thenReturn(list);
+//        assertEquals(this.bookRecordService.getAllBookRecord(),list);
 //        assertThat(this.bookRecordService.getAllBookRecord()).isEqualTo(list);
     }
 

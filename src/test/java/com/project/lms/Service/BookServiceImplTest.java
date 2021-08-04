@@ -1,4 +1,4 @@
-package com.project.lms;
+package com.project.lms.Service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.project.lms.Service.Implementation.*;
@@ -32,15 +33,21 @@ public class BookServiceImplTest{
     @Autowired
     private BookServiceImplementation bookService;
 
-    private Book book = new Book();
+    private Book book = new Book(1);
 
     @Before
     public void before()
     {
-        book.setId(1);
         book.setTitle("Alchemist");
         book.setAuthor("Paulo coelho");
         book.setQuantity(1);
+    }
+
+    @Test
+    public void getBookById()
+    {
+        Mockito.when(this.bookRepository.findBookById(1)).thenReturn(book);
+//        assertEquals(this.bookService);
     }
 
     @Test
@@ -61,8 +68,8 @@ public class BookServiceImplTest{
     public void addBook()
     {
         Mockito.when(bookRepository.save(book)).thenReturn(book);
-        Book book1  = this.bookService.addBook(book);
-        assertTrue(book1.equals(book));
+//        Book book1  = this.bookService.addBook(book);
+//        assertTrue(book1.equals(book));
 
     }
 //    public List<Book> getTheBookByAuthor(String author);

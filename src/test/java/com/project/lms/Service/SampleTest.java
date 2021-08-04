@@ -1,4 +1,4 @@
-package com.project.lms;
+package com.project.lms.Service;
 
 import com.project.lms.Entities.User;
 import com.project.lms.Repository.UserRepository;

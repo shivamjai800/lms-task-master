@@ -1,4 +1,4 @@
-package com.project.lms;
+package com.project.lms.Service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -60,6 +60,23 @@ public class UserServiceImplTest {
 		user.setPassword("abcdef");
 		user.setRoles("ROLE_USER");
 	}
+
+	@Test
+	public void getAllUser()
+	{
+		List<User> list = new ArrayList<>();
+		list.add(user);
+		Mockito.when(this.userRepository.findAll()).thenReturn(list);
+		Assert.assertEquals(list,this.userService.getAllUser());
+	}
+
+	@Test
+	public void getTheUser()
+	{
+		Mockito.when(userRepository.findByUsername("shivamuser")).thenReturn(user);
+		assertThat(userService.getTheUser("shivamuser")).isEqualTo(user);
+	}
+
 	@Test
 	public void addUser()
 	{
@@ -79,12 +96,7 @@ public class UserServiceImplTest {
 		
 	}
 
-	@Test
-	public void getTheUser()
-	{
-		Mockito.when(userRepository.findByUsername("shivamuser")).thenReturn(user);
-		assertThat(userService.getTheUser("shivamuser")).isEqualTo(user);
-	}
+
 
 	@Test
 	public void deleteTheUser()

@@ -1,5 +1,6 @@
 package com.project.lms.Controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.project.lms.Service.Implementation.BookRecordServiceImpl;
 import com.project.lms.Service.Implementation.BookServiceImplementation;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,14 +38,15 @@ public class AdminBookController {
 	}
 
 	@PostMapping("/book")
-	public String addBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
+	public String addBook(@Valid @ModelAttribute("book") Book book, @RequestParam("bookImage") MultipartFile bookImage, BindingResult result, Model model) {
 		System.out.println(book);
 		if (result.hasErrors()) {
 			model.addAttribute("book", book);
 			return "admin/addBookView";
 		}
 		try {
-			book = bookService.addBook(book);
+			System.out.println(book.toString());
+			book = bookService.addBook(book, bookImage);
 
 		} catch (IllegalArgumentException e) {
 			System.out.println("IllegalArgumentException Exception occurred in addBook of Admin Book Controller");

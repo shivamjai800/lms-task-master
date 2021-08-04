@@ -34,6 +34,9 @@ public class Book {
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH},fetch = FetchType.EAGER)
 	@JoinColumn(name = "bookId")
 	private List<BookRecord> request;
+
+	@Column(name = "image")
+	private String image;
 	
 	public Book() {
 		super();
@@ -93,10 +96,25 @@ public class Book {
 		this.request = request;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", title=" + title + ", author=" + author + ", quantity=" + quantity + ", unitBooks="
-				+ unitBooks + "]";
+		return "Book{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", author='" + author + '\'' +
+				", quantity=" + quantity +
+				", unitBooks=" + unitBooks +
+				", request=" + request +
+				", image='" + image + '\'' +
+				'}';
 	}
 
 	@Override
