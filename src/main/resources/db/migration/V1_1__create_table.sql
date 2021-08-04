@@ -36,3 +36,4 @@ create table if not exists userr
     roles    varchar(255),
     primary key (username)
 );
+CREATE SEQUENCE if not exists hibernate_sequence START 4;
