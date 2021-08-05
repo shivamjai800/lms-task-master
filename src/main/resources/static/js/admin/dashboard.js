@@ -8,10 +8,16 @@ function deleteUser(id) {
 		success: function (data, textStatus, xhr) {
 			console.log("data = " + data + " textStatus = " + textStatus + " xhr = " + xhr);
 			if (textStatus == "success") {
-				window.prompt(username + " is deleted from the database");
-				window.location.reload();
+				showPopUp(username + " is deleted from the database");
 			}
 			/*   $('#output').append(msg); */
+		},
+		error: function (xhr, textStatus,errorThrown)
+		{
+			if(xhr.status==405)
+			{
+				showPopUp("Default User deletion is not allowed");
+			}
 		}
 	});
 }
@@ -50,11 +56,15 @@ function saveUser(id) {
 			"roles": roles
 		}),
 		success: function (data, textStatus, xhr) {
-			console.log("here")
-			console.log("data = " + data + " textStatus = " + textStatus + " xhr = " + xhr);
 			if (textStatus == "success") {
-				window.prompt(username + " is updated from the database");
-				window.location.reload();
+				showPopUp(username + " is updated from the database");
+			}
+		},
+		error: function (xhr, textStatus,errorThrown)
+		{
+			if(xhr.status==405)
+			{
+				showPopUp("Default User Modification is not allowed");
 			}
 		}
 	});

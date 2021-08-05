@@ -4,6 +4,8 @@ import javax.imageio.IIOException;
 import javax.validation.Valid;
 import javax.validation.constraints.Null;
 import java.util.*;
+
+import com.project.lms.Exception.DefaultUserModificationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +36,12 @@ public class AdminController {
 		
 		try {
 			userService.deleteUser(username);
-		} catch (IllegalArgumentException e) {
+		}
+		catch(DefaultUserModificationException e)
+		{
+			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+		}
+		catch (IllegalArgumentException e) {
 			System.out.println("IllegalArgumentException Exception occurred in delete user of Admin COntroller");
 			System.out.println("You might have passed null Username value in user Service method method");
 			System.out.println("Actual message = "+e.getMessage());
@@ -80,7 +87,12 @@ public class AdminController {
 
 		try {
 			userService.updateUser(user, username);
-		} catch (IllegalArgumentException e) {
+		}
+		catch(DefaultUserModificationException e)
+		{
+			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+		}
+		catch (IllegalArgumentException e) {
 			System.out.println("IllegalArgumentException Exception occurred in update user of Admin COntroller");
 			System.out.println("You might have passed null Username value in user Service method method");
 			System.out.println("Actual message = "+e.getMessage());

@@ -7,6 +7,7 @@ import java.security.Principal;
 import java.util.*;
 
 import com.project.lms.Details.CustomUserDetails;
+import com.project.lms.Exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -66,6 +68,9 @@ public class UserController {
 	public String addUser(HttpServletRequest request, @Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
 		
 		if (result.hasErrors()) {
+			result.getAllErrors().forEach(e -> {
+				System.out.println("ERROR  = "+e.toString());
+			});
 			model.addAttribute("user", user);
 			return "register";
 		}
@@ -81,6 +86,14 @@ public class UserController {
 			Authentication authentication = authenticationManager.authenticate(authToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
+		}
+		catch (UserAlreadyExistsException e)
+		{
+			System.out.println("UserAlreadyExistsException = "+e.getMessage());
+			model.addAttribute("user",user);
+			FieldError fieldError = new FieldError("user","username",e.getMessage());
+			result.addError(fieldError);
+			return "register";
 		}
 		catch(NullPointerException | IllegalArgumentException e)
 		{
