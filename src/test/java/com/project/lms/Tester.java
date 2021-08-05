@@ -1,7 +1,7 @@
 package com.project.lms;
 
 
-import com.project.lms.Exception.BookApproveException;
+import com.project.lms.exception.BookApproveException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

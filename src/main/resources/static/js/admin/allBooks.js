@@ -1,7 +1,7 @@
 
 function deleteBook(id) {
 
-	let url = "/admin/book/" + id;
+	let url = "/admin/books/" + id;
 	$.ajax({
 		type: "DELETE",
 		url: url,
@@ -11,6 +11,16 @@ function deleteBook(id) {
 				window.location.reload();
 			}
 			/*   $('#output').append(msg); */
+		},
+		error: function (xhr, textStatus,errorThrown)
+		{
+			// console.log(xhr);
+			// console.log(textStatus);
+			// console.log(errorThrown);
+			if(xhr.status==417)
+			{
+				showPopUp(xhr.responseText);
+			}
 		}
 	});
 }
@@ -25,7 +35,7 @@ function saveBook(id) {
 	let title = document.getElementById('title' + id).innerText;
 	let author = document.getElementById('author' + id).innerText;
 	let quantity = document.getElementById('quantity' + id).innerText;
-	let url = "/admin/book/" + Id;
+	let url = "/admin/books/" + Id;
 	$.ajax({
 		type: "PUT",
 		url: url,
@@ -40,6 +50,16 @@ function saveBook(id) {
 			if (textStatus == "success") {
 				window.prompt( "Book is updated on the database");
 				window.location.reload();
+			}
+		},
+		error: function (xhr, textStatus,errorThrown)
+		{
+			// console.log(xhr);
+			// console.log(textStatus);
+			// console.log(errorThrown);
+			if(xhr.status==400)
+			{
+				showPopUp(xhr.responseText);
 			}
 		}
 	});
