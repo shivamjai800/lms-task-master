@@ -75,20 +75,11 @@ public class FrontController {
     @GetMapping("/register")
     public String register(Model model)
     {
-//		System.out.println("This function is register in the Front Controller is called");
     	model.addAttribute("user",new User());
         return "register";
     }
 
-    
 
-//    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-//    @ExceptionHandler(value = Exception.class)
-//    public String exceptionHandler()
-//    {
-////		System.out.println("This function is exceptionHandler in the Front Controller is called");
-//    	return "error";
-//    }
 
 
     

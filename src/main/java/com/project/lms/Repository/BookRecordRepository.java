@@ -31,15 +31,15 @@ public interface BookRecordRepository extends PagingAndSortingRepository<BookRec
 	 
 	public List<BookRecord> findAll();
 
-	public Page<BookRecord> findAll(Specification<BookRecord> spec, Pageable page);
 
+	public Page<BookRecord> findAll(Specification<BookRecord> spec, Pageable page);
 	@Query(value = "SELECT bR from BookRecord bR where  bR.userUsername = :userUsername")
 	public Page<BookRecord> findBookRecordByUserUsername(String userUsername, Pageable perPageable);
 
-	@Query(value = "select b.id,b.author, b.quantity,b.title, COUNT(bR.bookId) from Book as b inner join BookRecord as bR on b.id=bR.bookId where bR.startDateTime>=:required_date_time group by b")
+	@Query(value = "select b.id,b.author, b.quantity,b.title, COUNT(bR.bookId) from Book as b inner join BookRecord as bR on b.id=bR.bookId where bR.startDateTime>=:required_date_time and bR.status='RETURNED' group by b")
 	public List<Object[]> topRecords(LocalDateTime required_date_time,Pageable perPageable );
 
-	@Query(value = "select u, COUNT(bR.userUsername) from User as u inner join BookRecord as bR on u.username=bR.userUsername where bR.startDateTime>=:required_date_time group by u")
+	@Query(value = "select u, COUNT(bR.userUsername) from User as u inner join BookRecord as bR on u.username=bR.userUsername where bR.startDateTime>=:required_date_time and bR.status='RETURNED' group by u")
 	public List<Object[]> topUsers(LocalDateTime required_date_time,Pageable perPageable );
 
 

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.project.lms.Entities.*;
+import com.project.lms.Exception.BookApproveException;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -151,10 +152,15 @@ public class AdminBookController {
 			bookRecord.setAdminId(principal == null ? "shivamadmin" : principal.getName());
 			BookRecord oldBookRecord = this.bookRecordService.findBookRecordById(requestId);
 			this.bookRecordService.updateBookRecordById(bookRecord, requestId);
-		} catch (Exception e) {
-			System.out.println("in update Book Record status  = " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+		catch (BookApproveException e)
+		{
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+		}
+//		catch (Exception e) {
+//			System.out.println("in update Book Record status  = " + e.getMessage());
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//		}
 		return new ResponseEntity<>("Book status is changed" + bookRecord.getStatus() + " Successfully ",
 				HttpStatus.OK);
 	}

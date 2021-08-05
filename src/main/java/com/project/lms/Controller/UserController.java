@@ -1,18 +1,23 @@
 package com.project.lms.Controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.security.Principal;
 import java.util.*;
+
+import com.project.lms.Details.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +35,8 @@ public class UserController {
 
 	@Autowired
 	UserServiceImplementation userService;
+	@Autowired
+	DaoAuthenticationProvider authenticationManager;
 
 	@GetMapping("/edit")
 	public String userEditing(Model model, Principal principal) {
@@ -56,7 +63,7 @@ public class UserController {
 	
 
 	@PostMapping("")
-	public String addUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+	public String addUser(HttpServletRequest request, @Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
 		
 		if (result.hasErrors()) {
 			model.addAttribute("user", user);
@@ -64,8 +71,17 @@ public class UserController {
 		}
 
 		try {
+			String username = user.getUsername();
+			String password = user.getPassword();
 			User user1 = userService.addUser(user);
-		} 
+
+//			Authenticate
+			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+			authToken.setDetails(new WebAuthenticationDetails(request));
+			Authentication authentication = authenticationManager.authenticate(authToken);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		}
 		catch(NullPointerException | IllegalArgumentException e)
 		{
 			String message ="";
@@ -76,10 +92,11 @@ public class UserController {
 			System.out.println("Actual Message"+ e.getMessage());
 			return "error";
 		}
-		if (user.getRoles().equals("ROLE_ADMIN"))
-			return "admin/dashboard";
-		else
-			return "user/dashboard";
+		return "redirect:/user";
+//		if (user.getRoles().equals("ROLE_ADMIN"))
+//			return "admin/dashboard";
+//		else
+//			return "user/dashboard";
 	}
 
 	@GetMapping("")

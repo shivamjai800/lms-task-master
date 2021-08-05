@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -14,6 +15,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import com.project.lms.Entities.*;
+import com.project.lms.Exception.BookApproveException;
 import com.project.lms.Repository.BookRecordSpecs;
 import javafx.util.Pair;
 import org.json.JSONObject;
@@ -67,13 +69,18 @@ public class BookRecordServiceImpl implements BookRecordService {
 	}
 
 	@Override
-	public void updateBookRecordById(BookRecord bNew, int requestId) {
+	public void updateBookRecordById(BookRecord bNew, int requestId) throws BookApproveException {
 		BookRecord bOld = this.bookRecordRepository.findBookRecordById(requestId);
 		bOld.setStatus(bNew.getStatus());
 		if(bNew.getStatus().equals("APPROVED")) {
-			UnitBook unitBook = this.bookService.getBookById(bOld.getBookId()).getUnitBooks()
-					.parallelStream().filter(e -> !e.isAssigned()).findFirst().get();
+			Optional<UnitBook> optionalUnitBook = this.bookService.getBookById(bOld.getBookId()).getUnitBooks()
+					.parallelStream().filter(e -> !e.isAssigned()).findFirst();
+
+			if(!optionalUnitBook.isPresent())
+				throw new BookApproveException("Cannot Approve Book Exception as Book Not available","Cannot Approve");
+			UnitBook unitBook = optionalUnitBook.get();
 			bOld.setUnitBookReceived(unitBook.getId());
+			unitBook.setAssigned(true);
 		}
 		bOld.setAdminId(bNew.getAdminId());
 		bOld.setRemarks(bNew.getRemarks());
